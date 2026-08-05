@@ -7,6 +7,7 @@ const App = () => {
   const [details, setDetails] = useState("");
   const [tasks, setTasks] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
+  const [search, setSearch] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -54,6 +55,13 @@ const App = () => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
 
+  const filteredTasks = tasks.filter((note) => {
+    return (
+      note.title.toLowerCase().includes(search.toLowerCase()) ||
+      note.details.toLowerCase().includes(search.toLowerCase())
+    );
+  });
+
   return (
     <div className="min-h-screen bg-[#f7f7f5] text-black">
       <div className="max-w-7xl mx-auto">
@@ -90,21 +98,33 @@ const App = () => {
               }}
             />
 
-            <button 
-            type="submit" 
-            className="w-full active:scale-95 bg-black text-white hover:bg-gray-800 font-medium px-5 py-2 rounded outline-none">
+            <button
+              type="submit"
+              className="w-full active:scale-95 bg-black text-white hover:bg-gray-800 font-medium px-5 py-2 rounded outline-none"
+            >
               {editIndex === null ? "Add Note" : "Save Changes"}
             </button>
           </form>
           <div className="p-8">
             <h2 className="text-2xl font-semibold">Recent notes:</h2>
+            <input
+              type="text"
+              placeholder="Search notes..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+              className="mt-4 w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+            />
             <div className="flex flex-wrap items-start justify-start gap-5 mt-5 overflow-auto h-full">
               {tasks.length === 0 ? (
                 <p className="text-gray-500">
                   No notes yet. Create your first note.
                 </p>
+              ) : filteredTasks.length === 0 ? (
+                <p className="text-gray-500">No matching notes found.</p>
               ) : (
-                tasks.map(function (elem, idx) {
+                filteredTasks.map(function (elem, idx) {
                   return (
                     <div
                       key={idx}
@@ -120,17 +140,18 @@ const App = () => {
                       </div>
                       <div className="flex w-full gap-4 items-center">
                         <button
-                         type="button"
-                        onClick={() => {
-                          setTitle(elem.title);
-                          setDetails(elem.details);
-                          setEditIndex(idx);
-                        }} 
-                        className="w-1/2 cursor-pointer active:scale-95 bg-black hover:bg-gray-800 py-1 text-xs rounded font-bold text-white">
+                          type="button"
+                          onClick={() => {
+                            setTitle(elem.title);
+                            setDetails(elem.details);
+                            setEditIndex(idx);
+                          }}
+                          className="w-1/2 cursor-pointer active:scale-95 bg-black hover:bg-gray-800 py-1 text-xs rounded font-bold text-white"
+                        >
                           Edit
                         </button>
                         <button
-                        type="button"
+                          type="button"
                           onClick={() => {
                             deleteNote(idx);
                           }}
