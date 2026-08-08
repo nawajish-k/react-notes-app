@@ -64,14 +64,14 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#f7f7f5] text-black">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl font-bold mb-10">Notes</h1>
-        <div className="grid lg:grid-cols-[320px_1fr] gap-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 sm:mb-10">Notes</h1>
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 lg:gap-8">
           <form
             onSubmit={(e) => {
               submitHandler(e);
             }}
-            className="flex flex-col items-start gap-4 p-8 bg-white border border-gray-200 rounded-2xl shadow-sm"
+            className="flex flex-col items-start gap-4 p-5 sm:p-6 lg:p-8 bg-white border border-gray-200 rounded-2xl shadow-sm"
           >
             <h2 className="text-2xl font-semibold">Add notes:</h2>
 
@@ -105,7 +105,7 @@ const App = () => {
               {editIndex === null ? "Add Note" : "Save Changes"}
             </button>
           </form>
-          <div className="p-8">
+          <div className="p-0 sm:p-2 lg:p-8">
             <h2 className="text-2xl font-semibold">Recent notes:</h2>
             <input
               type="text"
@@ -114,9 +114,9 @@ const App = () => {
               onChange={(e) => {
                 setSearch(e.target.value);
               }}
-              className="mt-4 w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
+              className="mt-4 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
             />
-            <div className="flex flex-wrap items-start justify-start gap-5 mt-5 overflow-auto h-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-5">
               {tasks.length === 0 ? (
                 <p className="text-gray-500">
                   No notes yet. Create your first note.
@@ -128,10 +128,10 @@ const App = () => {
                   return (
                     <div
                       key={idx}
-                      className="flex justify-between flex-col items-start relative min-h-52 w-64 rounded-2xl p-4 text-black bg-white"
+                      className="flex justify-between flex-col items-start relative min-h-52 w-full rounded-2xl p-4 text-black bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
                     >
                       <div>
-                        <h3 className="leading-tight text-xl font-bold">
+                        <h3 className="leading-tight text-lg sm:text-xl font-bold break-words">
                           {elem.title}
                         </h3>
                         <p className="mt-4 leading-tight font-medium wrap-break-word whitespace-pre-wrap">
@@ -146,7 +146,7 @@ const App = () => {
                             setDetails(elem.details);
                             setEditIndex(idx);
                           }}
-                          className="w-1/2 cursor-pointer active:scale-95 bg-black hover:bg-gray-800 py-1 text-xs rounded font-bold text-white"
+                          className="w-1/2 cursor-pointer active:scale-95 bg-black hover:bg-gray-800 py-2 text-xs rounded-lg font-bold text-white transition"
                         >
                           Edit
                         </button>
@@ -155,7 +155,7 @@ const App = () => {
                           onClick={() => {
                             deleteNote(idx);
                           }}
-                          className="w-1/2 cursor-pointer active:scale-95 bg-black hover:bg-gray-800 py-1 text-xs rounded font-bold text-white"
+                          className="w-1/2 cursor-pointer active:scale-95 bg-black hover:bg-gray-800 py-2 text-xs rounded-lg font-bold text-white transition"
                         >
                           Delete
                         </button>
