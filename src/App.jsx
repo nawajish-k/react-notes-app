@@ -11,7 +11,6 @@ const App = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(editIndex);
 
     if (title.trim() === "" || details.trim() === "") {
       return;
@@ -22,11 +21,13 @@ const App = () => {
       copyTasks.push({
         title,
         details,
+        date: new Date(),
       });
     } else {
       copyTasks[editIndex] = {
         title,
         details,
+        date: copyTasks[editIndex].date,
       };
     }
 
@@ -64,8 +65,10 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#f7f7f5] text-black">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 sm:mb-10">Notes</h1>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 sm:mb-10">
+          Notes
+        </h1>
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 lg:gap-8">
           <form
             onSubmit={(e) => {
@@ -73,7 +76,9 @@ const App = () => {
             }}
             className="flex flex-col items-start gap-4 p-5 sm:p-6 lg:p-8 bg-white border border-gray-200 rounded-2xl shadow-sm"
           >
-            <h2 className="text-2xl font-semibold">Add notes:</h2>
+            <h2 className="text-2xl font-semibold">
+              {editIndex === null ? "Add note:" : "Edit note:"}
+            </h2>
 
             <input
               type="text"
@@ -128,14 +133,36 @@ const App = () => {
                   return (
                     <div
                       key={idx}
-                      className="flex justify-between flex-col items-start relative min-h-52 w-full rounded-2xl p-4 text-black bg-white border border-gray-200 shadow-sm hover:shadow-md transition-shadow"
+                      className={`flex justify-between flex-col items-start relative min-h-52 w-full rounded-2xl p-4 text-black border shadow-sm transition ${
+                        editIndex === idx
+                          ? "bg-blue-50 border-blue-400 shadow-md"
+                          : "bg-white border-gray-200 hover:shadow-md"
+                      }`}
                     >
                       <div>
-                        <h3 className="leading-tight text-lg sm:text-xl font-bold break-words">
+                        {editIndex === idx && (
+                          <p className="mb-2 text-xs font-bold text-blue-600">
+                            EDITING
+                          </p>
+                        )}
+
+                        <h3 className="leading-tight text-lg sm:text-xl font-bold wrap-break-word">
                           {elem.title}
                         </h3>
                         <p className="mt-4 leading-tight font-medium wrap-break-word whitespace-pre-wrap">
                           {elem.details}
+                        </p>
+                        <p className="mt-3 text-xs text-gray-500">
+                          {new Date(elem.date).toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}{" "}
+                          •{" "}
+                          {new Date(elem.date).toLocaleTimeString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
                         </p>
                       </div>
                       <div className="flex w-full gap-4 items-center">
